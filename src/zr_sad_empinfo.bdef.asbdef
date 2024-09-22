@@ -1,0 +1,61 @@
+managed implementation in class ZBP_R_SAD_EMPINFO unique;
+strict ( 2 );
+with draft;
+define behavior for ZR_SAD_EMPINFO alias Empinfo
+persistent table ZSAD_EMPINFO
+draft table ZSAD_EMPINFO_D
+etag master LastChangedAt
+lock master total etag LocalLastChangedAt
+authorization master( global )
+
+{
+  field ( readonly )
+   Id,
+   Salary,
+   Taxrate,
+   Experience,
+   CreatedBy,
+   CreatedAt,
+   LastChangedBy,
+   LastChangedAt,
+   LocalLastChangedAt;
+
+  field ( numbering : managed )
+   Id;
+
+
+  create;
+  update;
+  delete;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  determination detSalary on save { field Role; }
+  determination detTaxrate on save { field Salary; }
+  determination detKids on save { field Kids; }
+  determination detContract on save { field CurContractStart, CurContractEnd; }
+
+  mapping for ZSAD_EMPINFO
+  {
+    Id = id;
+    Firstname = firstname;
+    Lastname = lastname;
+    Role = role;
+    Taxrate = taxrate;
+    Salary = salary;
+    Age = age;
+    Experience = experience;
+    Kids = kids;
+    CurContractStart = cur_contract_start;
+    CurContractEnd = cur_contract_end;
+    CreatedBy = created_by;
+    CreatedAt = created_at;
+    LastChangedBy = last_changed_by;
+    LastChangedAt = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
